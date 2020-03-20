@@ -14,7 +14,7 @@ STEPS_PER_EPOCH = 450
 EPOCHS = 50
 LAMBDA = 1000
 
-word_dir = os.path.dirname(os.getcwd())
+work_dir = os.path.dirname(os.getcwd())
 
 # Instance Normalization
 class InstanceNormalization(tf.keras.layers.Layer):
@@ -295,7 +295,7 @@ def preprocess(images, batch_size):
 		mask_image = deepcopy(image[x: x+224, y: y+224, :])
         
         # 先处理mask_on_black
-		mask_path = os.path.join(word_dir, "datasets\\mask_on_black\\block_")
+		mask_path = os.path.join(work_dir, "datasets\\mask_on_black\\block_")
         # black block is from 148 pics
 		select = np.random.randint(148, size=(4, 4))
         # 16 blocks integrate to a whole-mask (56×56 each block)
@@ -308,7 +308,7 @@ def preprocess(images, batch_size):
 		mask_image[mask == 255] = 255
         
         # mask_on_white
-		mask_path = os.path.join(word_dir, "datasets\\mask_on_white\\block_")
+		mask_path = os.path.join(work_dir, "datasets\\mask_on_white\\block_")
         # black block is from 148 pics
 		select = np.random.randint(12, size=3)
 		for i in select:
@@ -346,8 +346,8 @@ if __name__ == '__main__':
 	tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 	# load data
-	train_images = np.load(os.path.join(word_dir, "datasets\\xingkai\\train_images.npy"))
-	test_images = np.load(os.path.join(word_dir, "datasets\\xingkai\\test_images.npy"))
+	train_images = np.load(os.path.join(work_dir, "datasets\\xingkai\\train_images.npy"))
+	test_images = np.load(os.path.join(work_dir, "datasets\\xingkai\\test_images.npy"))
 
 	# binarize
 	train_images[train_images >= 127.5] = 255
