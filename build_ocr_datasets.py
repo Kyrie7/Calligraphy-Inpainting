@@ -5,7 +5,26 @@ from PIL import Image
 import PIL
 import os
 import PIL.ImageOps
+import json
 from io import StringIO, BytesIO
+
+def build_label_json():
+	label_list = os.listdir('./ocr_data/train/')
+	label_dict = dict()
+	cnt = 0
+	for label in label_list:
+		label_dict[label] = cnt
+		cnt += 1
+	label_json = json.dumps(label_dict)
+	with open("./ocr_data/label.json", 'w', encoding='utf-8') as file:
+		json.dump(label_json, file)
+
+def load_label_json():
+	with open("./ocr_data/label.json", 'r', encoding='utf-8') as file:
+		label_json = json.load(file)
+	label_dict = json.loads(label_json)
+	return label_dict
+
 
 def load_gnt_file(filename):
 	with open(filename, "rb") as f:
@@ -24,28 +43,28 @@ def load_gnt_file(filename):
 			image[image >= 127.5] = 255
 			image = Image.fromarray(image)
 			image = image.convert('RGB')
-			image = image.resize((64, 64))
+			image = image.resize((128, 128))
 			image = PIL.ImageOps.invert(image)
 			yield image, label
 
-def save_pics(filename, tags='train'):
-	cnt = 0
-	data = load_gnt_file(filename)
-	while True:
-		try:
-			image, label = next(data)
-			if not os.path.exists("./data" + tags + "/" + label):
-				os.mkdir("./data/" + tags + "/" + label)
-			image.save("./data" + tags + "/" + label + "/" + str(cnt) + ".png")
-			cnt += 1
-		except StopIteration:
-			break
-	print("The number of images: ", cnt)
+def save_pics(filenames, tags):
+	for filename, tag in zip(filenames, tags):
+		cnt = 0
+		data = load_gnt_file(filename)
+		while True:
+			try:
+				image, label = next(data)
+				if not os.path.exists("./data" + tags + "/" + label):
+					os.mkdir("./data/" + tags + "/" + label)
+				image.save("./data" + tags + "/" + label + "/" + str(cnt) + ".png")
+				cnt += 1
+			except StopIteration:
+				break
+		print("The number of " + tag + " images: ", cnt)
 
 if __name__ == '__main__':
-	train_filename = "./data/1.0train-gb1.gnt"
-	test_filename = "./data/1.0test-gb1.gnt"
-	save_pics(train_filename)
-	save_pics(test_filename)
+	filenames = ["./ocr_data/1.0train-gb1.gnt","./ocr_data/1.0test-gb1.gnt"]
+	tags = ["train", "test"]
+	save_pics(filenames, tags)
 
 
