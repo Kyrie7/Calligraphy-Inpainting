@@ -82,7 +82,7 @@ def preprocess(images, batch_size):
 def build_train_dataset(batch_size):
 	train_path = pathlib.Path('./data/train')
 	train_images_paths = list(train_path.glob('*/*'))
-	train_images_paths = [str(path) for path in train_images_paths][:300]
+	train_images_paths = [str(path) for path in train_images_paths]
 	for _ in range(3):
 		random.shuffle(train_images_paths)
 	image_count = len(train_images_paths)
