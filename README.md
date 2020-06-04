@@ -1,7 +1,7 @@
 # Calligraphy-Inpainting
  calligraphy rubbings impainting
 
- tensorflow -2.1.0
+ tensorflow 2.1.0
  numpy 1.18.1
  matplotlib 3.1.3
  tqdm 4.42.1
