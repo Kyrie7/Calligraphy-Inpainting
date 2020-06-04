@@ -56,7 +56,7 @@ def val(val_mask_images, val_real_images, generator, val_batch_size, epoch):
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--batch-size', type=int, default=8, help='Batch Size')
-	parser.add_argument('--val-batch-size', type=int, default=5, help='Draw Result Batch Size')
+	parser.add_argument('--val-batch-size', type=int, default=8, help='Draw Result Batch Size')
 	parser.add_argument('--model-index', type=int, default=1, help='Choose Model To Train, 1 2 3 4 optional')
 	parser.add_argument('--weight-decay', type=float, default=1e-4, help='Weight Decay')
 	parser.add_argument('--learning-rate', type=float, default=2e-4, help='Initial Learning Rate')
